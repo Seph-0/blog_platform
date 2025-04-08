@@ -2,6 +2,11 @@
     require 'config.php';
     session_start();
     include 'header.php';
+
+    if (!isset($_SESSION['user_id'])) {
+        header("Location: index.php");
+        exit;
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,5 +17,6 @@
 </head>
 <body>
     <h1>Hello World</h1>
+    <a href="edit_user.php">Edit user</a>
 </body>
 </html>
