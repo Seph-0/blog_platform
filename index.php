@@ -97,30 +97,31 @@
 
                 $('#register_form').submit(function(e) {
                     e.preventDefault();
-                    $.ajax({
-                        url: './controllers/handle_register.php',
-                        type: 'POST',
-                        data: $(this).serialize(),
-                        success: function(response) {
-                            if($('#register-password').val() === $('#confirm_password').val()) {
-                                if(response.trim() === "Email is already registered."){
-                                    $('#email-error').text("Email is already registered.").removeClass('d-none').show();
-                                    $('#register-email').addClass('border-danger');
-                                    return;
-                                }
-                                else{
-                                    $('#register_modal').addClass('d-none');
-                                    $('#login_modal').removeClass('d-none');
-                                    $('#register-success').removeClass('d-none');
-                                }
-                            } else {
-                                $('#password-error').text("Password does not match").removeClass('d-none').show();
+                    if($('#register-password').val() === $('#confirm_password').val()) {
+                        $.ajax({
+                            url: './controllers/handle_register.php',
+                            type: 'POST',
+                            data: $(this).serialize(),
+                            success: function(response) {
+                            
+                                    if(response.trim() === "Email is already registered."){
+                                        $('#email-error').text("Email is already registered.").removeClass('d-none').show();
+                                        $('#register-email').addClass('border-danger');
+                                        return;
+                                    }
+                                    else{
+                                        $('#register_modal').addClass('d-none');
+                                        $('#login_modal').removeClass('d-none');
+                                        $('#register-success').removeClass('d-none');
+                                    }
+                            },
+                            error: function(xhr, status, error) {
+                                alert('Error: ' + error);
                             }
-                        },
-                        error: function(xhr, status, error) {
-                            alert('Error: ' + error);
-                        }
-                    });
+                        });
+                    } else {
+                        $('#password-error').text("Password does not match").removeClass('d-none').show();
+                    }
                 });
 
                 $('#login_form').submit(function(e) {
